@@ -9,8 +9,8 @@ This guide walks you through setting up your Laravel project with a PostgreSQL d
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
+   git clone https://github.com/Sun-vatanak/moblieapp-api-nu.git
+   cd moblieapp-api-nu
    ```
 
 2. **Copy the example environment file**
