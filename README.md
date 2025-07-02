@@ -49,7 +49,7 @@ This guide walks you through setting up your Laravel project with a PostgreSQL d
    ```bash
    php artisan migrate --seed
    ```
-   6. **Run Project**
+7. **Run Project**
 
       ```
       php artisan serve
