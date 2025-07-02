@@ -11,19 +11,30 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable; // ✅ This line enables API tokens
 
-    protected $fillable = ['name', 'email', 'password', 'phone', 'location', 'role'];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'phone',
+        'location',
+        'role',
+        'image'
+    ];
 
     protected $hidden = ['password', 'remember_token'];
 
-    public function products() {
+    public function products()
+    {
         return $this->hasMany(Product::class, 'seller_id');
     }
 
-    public function orders() {
+    public function orders()
+    {
         return $this->hasMany(Order::class);
     }
 
-    public function cart() {
+    public function cart()
+    {
         return $this->hasOne(Cart::class);
     }
 }

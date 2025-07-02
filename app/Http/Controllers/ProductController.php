@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Product;
@@ -7,45 +8,110 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     // 🧾 List all products with category and seller info
-    public function index() {
-        return Product::with('category', 'seller')->get();
+    public function index()
+    {
+        $products = Product::with(['category', 'seller'])->get();
+
+        return response()->json([
+            'message' => 'Products retrieved successfully',
+            'data'    => $products
+        ]);
     }
 
-    // 🔍 Get one product by ID
-    public function show($id) {
-        return Product::with('category', 'seller')->findOrFail($id);
+    // 🔍 Show one product by ID
+    public function show($id)
+    {
+        $product = Product::with(['category', 'seller'])->find($id);
+
+        if (! $product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Product retrieved successfully',
+            'data'    => $product
+        ]);
     }
 
     // ➕ Create a new product
-    public function store(Request $request) {
-        // ✅ Validate incoming data
+    public function store(Request $request)
+    {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'category_id' => 'required|exists:categories,id',
-            'seller_id' => 'required|exists:users,id'
+            'name'             => 'required|string|max:255',
+            'description'      => 'nullable|string',
+            'price'            => 'required|numeric|min:0',
+            'image'            => 'nullable|file|mimes:jpg,jpeg,png,gif|max:2048',
+            'expiration_date'  => 'nullable|date',
+            'origin'           => 'nullable|string',
+            'category_id'      => 'required|exists:categories,id',
+            'seller_id'        => 'required|exists:users,id',
         ]);
 
-        // 🧪 Create the product
-        $product = Product::create($request->all());
+        $product = Product::create($request->only([
+            'name',
+            'description',
+            'price',
+            'image',
+            'expiration_date',
+            'origin',
+            'category_id',
+            'seller_id'
+        ]));
 
-        // ✅ Return the created product
-        return response()->json($product, 201);
+        return response()->json([
+            'message' => 'Product created successfully',
+            'product' => $product
+        ], 201);
     }
 
-    // ✏️ Update product details
-    public function update(Request $request, $id) {
-        $product = Product::findOrFail($id);
+    // ✏️ Update an existing product
+    public function update(Request $request, $id)
+    {
+        $product = Product::find($id);
 
-        // Update with validated input
-        $product->update($request->all());
+        if (! $product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
 
-        return response()->json($product);
+        $request->validate([
+            'name'             => 'sometimes|string|max:255',
+            'description'      => 'sometimes|nullable|string',
+            'price'            => 'sometimes|numeric|min:0',
+            'image'            => 'sometimes|nullable|file|mimes:jpg,jpeg,png,gif|max:2048',
+            'expiration_date'  => 'sometimes|nullable|date',
+            'origin'           => 'sometimes|nullable|string',
+            'category_id'      => 'sometimes|exists:categories,id',
+            'seller_id'        => 'sometimes|exists:users,id',
+        ]);
+
+        $product->update($request->only([
+            'name',
+            'description',
+            'price',
+            'image',
+            'expiration_date',
+            'origin',
+            'category_id',
+            'seller_id'
+        ]));
+
+        return response()->json([
+            'message' => 'Product updated successfully',
+            'data'    => $product
+        ]);
     }
 
     // ❌ Delete a product
-    public function destroy($id) {
-        Product::destroy($id);
-        return response()->json(['message' => 'Product deleted']);
+    public function destroy($id)
+    {
+        $product = Product::find($id);
+
+        if (! $product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        $product->delete();
+
+        return response()->json(['message' => 'Product deleted successfully']);
     }
 }
