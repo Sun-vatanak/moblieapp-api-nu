@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 
@@ -38,5 +39,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/add', [CartController::class, 'add']);
         Route::put('/update/{id}', [CartController::class, 'update']);
         Route::delete('/remove/{id}', [CartController::class, 'remove']);
+    });
+    Route::prefix('discount')->group(function () {
+        Route::get('/{id}', [DiscountController::class, 'show']);
+        Route::post('/', [DiscountController::class, 'store']);
+
     });
 });
