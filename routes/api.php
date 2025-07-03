@@ -41,8 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/remove/{id}', [CartController::class, 'remove']);
     });
     Route::prefix('discount')->group(function () {
+        Route::get('/', [DiscountController::class, 'index']);
+        Route::put('/{id}', [DiscountController::class, 'update']);
         Route::get('/{id}', [DiscountController::class, 'show']);
         Route::post('/', [DiscountController::class, 'store']);
-
     });
 });

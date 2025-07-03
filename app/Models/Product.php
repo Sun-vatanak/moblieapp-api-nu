@@ -17,7 +17,8 @@ class Product extends Model
         'expiration_date',
         'origin',
         'category_id',
-        'seller_id'
+        'seller_id',
+        'discount_id',
     ];
 
 
@@ -30,5 +31,9 @@ class Product extends Model
     public function seller()
     {
         return $this->belongsTo(User::class, 'seller_id');
+    }
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class);
     }
 }

@@ -18,9 +18,10 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->string('image')->nullable();
             $table->date('expiration_date')->nullable();
-            $table->string('origin')->nullable();
+            $table->string(column: 'origin')->nullable();
             $table->foreignId('category_id')->constrained();
             $table->foreignId('seller_id')->constrained('users');
+            $table->foreignId('discount_id')->nullable()->constrained('discounts')->nullOnDelete();
             $table->timestamps();
         });
     }
