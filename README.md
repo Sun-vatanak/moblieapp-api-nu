@@ -1,4 +1,5 @@
 
+---
 
 # Laravel Project Setup with PostgreSQL
 
@@ -46,15 +47,27 @@ This guide walks you through setting up your Laravel project with a PostgreSQL d
 
 6. **Run migrations and seed the database**
 
-   ```bash
-   php artisan migrate --seed
-   ```
-7. **Run Project**
+   This command will drop all tables and recreate them, then seed the database:
 
-      ```
-      php artisan serve
-     ```
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
+
+7. **Run the project**
+
+   ```bash
+   php artisan serve
+   ```
 
 ---
 
+## Default User Credentials (for testing)
 
+You can log in using the following credentials after seeding:
+
+* **Email:** [user@gmail.com](mailto:user@gmail.com)
+* **Password:** user1234
+
+---
+
+If you want me to add instructions on how to login or test the API endpoints, just let me know!
